@@ -1,15 +1,10 @@
 import { Tab } from "@headlessui/react";
 import { useState, useEffect, Fragment } from "react";
-
-interface WayPoint {
-  timestamp: number;
-  lat: number;
-  lng: number;
-}
+import { PathPoint } from "../utils/pathProgress";
 
 interface Path {
   name: string;
-  waypoints: WayPoint[];
+  waypoints: PathPoint[];
   disabled: boolean;
 }
 
@@ -19,17 +14,17 @@ const defaultPaths: Path[] = [
     disabled: false,
     waypoints: [
       { timestamp: 0, lat: 18.5664, lng: 73.7719 },
-      { timestamp: 1000, lat: 18.5664, lng: 73.7719 },
-      { timestamp: 1200, lat: 18.5664, lng: 73.7719 },
+      { timestamp: 1000, lat: 18.5664, lng: 73.7721 },
+      { timestamp: 1200, lat: 18.5664, lng: 73.7723 },
     ],
   },
   {
     name: "Path 2",
     disabled: false,
     waypoints: [
-      { timestamp: 0, lat: 18.5664, lng: 73.7719 },
-      { timestamp: 500, lat: 18.5664, lng: 73.7719 },
-      { timestamp: 1500, lat: 18.5664, lng: 73.7719 },
+      { timestamp: 0, lat: 18.5666, lng: 73.7719 },
+      { timestamp: 500, lat: 18.5666, lng: 73.7721 },
+      { timestamp: 1500, lat: 18.5666, lng: 73.7723 },
     ],
   },
 ];
