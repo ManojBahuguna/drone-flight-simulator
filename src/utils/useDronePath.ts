@@ -19,6 +19,7 @@ export function useDronePath({
   // Play simulation
   useEffect(() => {
     if (!isPlaying) return;
+    if (markers.length !== paths.length || paths.length < 2) return;
     let stopAnimation = false;
 
     let rafId: number;

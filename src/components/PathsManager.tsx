@@ -1,5 +1,5 @@
 import { Tab } from "@headlessui/react";
-import { Fragment } from "react";
+import { Fragment, MouseEvent } from "react";
 import { type Path } from "../utils/types";
 
 export function PathsManager({
@@ -9,6 +9,23 @@ export function PathsManager({
   paths: Path[];
   setPaths: React.Dispatch<React.SetStateAction<Path[]>>;
 }) {
+  const handleAddPath = () => {
+    setPaths((p) => {
+      return [
+        ...p,
+        {
+          name: `Drone ${p.length + 1}`,
+          waypoints: [{ lat: 18.5675, lng: 73.77, timestamp: 0 }],
+        },
+      ];
+    });
+  };
+
+  const handleRemovePath = (e: MouseEvent, path: Path) => {
+    e.preventDefault();
+    setPaths((paths) => paths.filter((p) => p !== path));
+  };
+
   return (
     <Tab.Group as="div" className="bg-black/20 p-2 rounded-br-2xl">
       <Tab.List>
@@ -16,8 +33,22 @@ export function PathsManager({
         {paths.map((path, pathIdx) => (
           <Tab className="Tab" key={path.name + pathIdx}>
             {path.name}
+
+            <span
+              className="text-xs ml-1"
+              onClick={(e) => handleRemovePath(e, path)}
+            >
+              ❌
+            </span>
           </Tab>
         ))}
+
+        <button
+          onClick={handleAddPath}
+          className="bg-white/70 rounded-full py-0.5 px-1"
+        >
+          ➕
+        </button>
       </Tab.List>
 
       <Tab.Panels className="TabPanel mt-2">
