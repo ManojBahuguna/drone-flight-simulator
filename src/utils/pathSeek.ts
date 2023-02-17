@@ -1,8 +1,4 @@
-export interface PathPoint {
-  timestamp: number;
-  lat: number;
-  lng: number;
-}
+import { type PathPoint } from "./types";
 
 const lerp = (x: number, y: number, v: number) => (1 - v) * x + v * y; // convert 0-1 range to x-y range
 const unlerp = (x: number, y: number, v: number) => (v - x) / (y - x); // x-y -> 0-1
@@ -27,35 +23,39 @@ function searchInPath(path: PathPoint[], timestamp: number) {
  * Assumptions:
  * - path is already sorted in ascending order
  * - atleast two points exists in path
- * - timestamp is within range of timestamps provided in path
  */
 export function getPointAtTimestamp(
   path: PathPoint[],
   timestamp: number
 ): [PathPoint, number] {
-  // const minTime = path[0].timestamp;
+  const minTime = path[0].timestamp;
   const maxTime = path[path.length - 1].timestamp;
 
-  if (timestamp === maxTime) {
+  // keep timestamp within range of path's timestamps
+  let clampedTimestamp = Math.max(minTime, timestamp);
+  clampedTimestamp = Math.min(maxTime, clampedTimestamp);
+
+  if (clampedTimestamp === minTime) return [path[0], 0];
+  if (clampedTimestamp === maxTime) {
     // reached end. return last path-point
     return [path[path.length - 1], path.length - 1];
   }
 
-  const startTimePointIdx = searchInPath(path, timestamp);
+  const startTimePointIdx = searchInPath(path, clampedTimestamp);
   const startTimePoint = path[startTimePointIdx];
   const endTimePoint = path[startTimePointIdx + 1];
 
   const timestampInterpolated = unlerp(
     startTimePoint.timestamp,
     endTimePoint.timestamp,
-    timestamp
+    clampedTimestamp
   );
 
   return [
     {
       lat: lerp(startTimePoint.lat, endTimePoint.lat, timestampInterpolated),
       lng: lerp(startTimePoint.lng, endTimePoint.lng, timestampInterpolated),
-      timestamp,
+      timestamp: clampedTimestamp,
     },
     startTimePointIdx,
   ];

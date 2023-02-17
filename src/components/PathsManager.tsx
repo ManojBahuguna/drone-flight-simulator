@@ -1,44 +1,21 @@
 import { Tab } from "@headlessui/react";
-import { useState, useEffect, Fragment } from "react";
-import { PathPoint } from "../utils/pathProgress";
+import { Fragment } from "react";
+import { type Path } from "../utils/types";
 
-interface Path {
-  name: string;
-  waypoints: PathPoint[];
-  disabled: boolean;
-}
-
-const defaultPaths: Path[] = [
-  {
-    name: "Path 1",
-    disabled: false,
-    waypoints: [
-      { timestamp: 0, lat: 18.5664, lng: 73.7719 },
-      { timestamp: 1000, lat: 18.5664, lng: 73.7721 },
-      { timestamp: 1200, lat: 18.5664, lng: 73.7723 },
-    ],
-  },
-  {
-    name: "Path 2",
-    disabled: false,
-    waypoints: [
-      { timestamp: 0, lat: 18.5666, lng: 73.7719 },
-      { timestamp: 500, lat: 18.5666, lng: 73.7721 },
-      { timestamp: 1500, lat: 18.5666, lng: 73.7723 },
-    ],
-  },
-];
-
-export function PathsManager() {
-  const [paths, setPaths] = useState<Path[]>(defaultPaths);
-
+export function PathsManager({
+  paths,
+  setPaths,
+}: {
+  paths: Path[];
+  setPaths: React.Dispatch<React.SetStateAction<Path[]>>;
+}) {
   return (
     <Tab.Group as="div" className="bg-black/20 p-2 rounded-br-2xl">
       <Tab.List>
         {/** @TODO Allow naming Tabs */}
         {paths.map((path, pathIdx) => (
           <Tab className="Tab" key={path.name + pathIdx}>
-            Path {pathIdx + 1}
+            {path.name}
           </Tab>
         ))}
       </Tab.List>

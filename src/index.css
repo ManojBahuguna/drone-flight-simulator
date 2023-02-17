@@ -33,4 +33,8 @@ body {
   .PrimaryButton {
     @apply Button bg-white;
   }
+
+  .DroneMarker {
+    @apply bg-[#ea4335] px-1 leading-5 rounded;
+  }
 }
