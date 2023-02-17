@@ -10,3 +10,27 @@ body,
   padding: 0;
   margin: 0;
 }
+
+body {
+  font-family: Sora, sans-serif;
+}
+
+@layer components {
+  .Tab {
+    @apply rounded-md bg-black/60 cursor-pointer px-5 py-2 text-sm mr-2 text-white font-semibold;
+    @apply ui-selected:bg-white ui-selected:shadow-lg ui-selected:text-blue-700;
+  }
+
+  input {
+    @apply bg-transparent px-2 py-1 text-ellipsis;
+  }
+
+  .Button {
+    @apply bg-white/40 rounded text-sm py-2 px-5;
+    @apply hover:shadow-md;
+  }
+
+  .PrimaryButton {
+    @apply Button bg-white;
+  }
+}
