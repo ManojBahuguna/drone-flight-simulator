@@ -1,10 +1,10 @@
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { Wrapper } from "@googlemaps/react-wrapper";
 import { MapView } from "./components/MapView";
 import { PathsManager } from "./components/PathsManager";
 import { type Path } from "./utils/types";
 import { usePathLine } from "./utils/usePathLine";
-import { useDronePath } from "./utils/useDronePath";
+import { SeekControls } from "./components/SeekControls";
 
 const defaultPaths: Path[] = [
   {
@@ -33,16 +33,6 @@ export function App() {
   const [map, setMap] = useState<google.maps.Map | null>(null);
   const [paths, setPaths] = useState<Path[]>(defaultPaths);
 
-  const minTimestamp = useMemo(() => {
-    const allTimestamps = paths.flatMap((p) =>
-      p.waypoints.map((w) => w.timestamp)
-    );
-    return Math.min(...allTimestamps);
-  }, [paths]);
-
-  // drone flight simulation
-  useDronePath({ paths, map, startAt: minTimestamp, isPlaying: true });
-
   // drone path line
   usePathLine(paths, map);
 
@@ -52,8 +42,15 @@ export function App() {
         <PathsManager paths={paths} setPaths={setPaths} />
       </div>
 
+      <div className="fixed z-10 bottom-5 w-[calc(100vw-200px)] left-[100px]">
+        <SeekControls
+          paths={paths}
+          map={map}
+        />
+      </div>
+
       <Wrapper apiKey={import.meta.env.VITE_MAPS_API_KEY}>
-        <MapView setMap={setMap} paths={paths} />
+        <MapView setMap={setMap} />
       </Wrapper>
     </div>
   );

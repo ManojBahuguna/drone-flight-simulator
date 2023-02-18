@@ -17,8 +17,8 @@ body {
 
 @layer components {
   .Tab {
-    @apply rounded-md bg-black/60 cursor-pointer px-5 py-2 text-sm mr-2 text-white font-semibold;
-    @apply ui-selected:bg-white ui-selected:shadow-lg ui-selected:text-blue-700;
+    @apply rounded-md bg-white/50 cursor-pointer px-5 py-2 text-sm mr-2 text-gray-600 font-semibold;
+    @apply ui-selected:bg-black/80 ui-selected:shadow-lg ui-selected:text-white ui-selected:border;
   }
 
   input {

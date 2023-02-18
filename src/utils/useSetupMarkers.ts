@@ -17,9 +17,7 @@ export function useSetupMarkers({
   useEffect(() => {
     if (!map) return;
 
-    const markersAtStartPosition = paths.map((path) => {
-      const [position] = getPointAtTimestamp(path.waypoints, startAt);
-
+    const newMarkers = paths.map((path) => {
       return new window.google.maps.Marker({
         map,
         label: {
@@ -28,16 +26,24 @@ export function useSetupMarkers({
           color: "white",
           fontSize: "12px",
         },
-        position,
       });
     });
-    setMarkers(markersAtStartPosition);
+    setMarkers(newMarkers);
 
     return () => {
-      markersAtStartPosition.forEach((m) => m.setMap(null));
+      newMarkers.forEach((m) => m.setMap(null));
       setMarkers([]);
     };
-  }, [paths, map, startAt]);
+  }, [paths, map]);
+
+  // set marker position to `startAt`
+  useEffect(() => {
+    if (markers.length !== paths.length) return;
+    markers.forEach((marker, i) => {
+      const [position] = getPointAtTimestamp(paths[i].waypoints, startAt);
+      marker.setPosition(position);
+    });
+  }, [paths, markers, startAt]);
 
   return markers;
 }
