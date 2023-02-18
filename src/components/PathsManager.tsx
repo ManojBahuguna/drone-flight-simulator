@@ -54,15 +54,15 @@ export function PathsManager({
       <Tab.Panels className="TabPanel mt-2">
         {paths.map((path, pathIdx) => (
           <Tab.Panel
-            className="max-h-[calc(100vh-120px)] rounded-lg bg-white/80 p-3 pb-4"
+            className="max-h-[calc(100vh-150px)] rounded-lg bg-black/70 text-white p-3 pb-4 overflow-y-auto"
             key={path.name + pathIdx}
           >
             <div className="grid grid-cols-[1fr,1fr,1fr,auto] text-sm gap-y-1">
-              <div className="font-semibold text-xs text-gray-700 p-2">
+              <div className="font-semibold text-xs text-gray-400 p-2">
                 Timestamp
               </div>
-              <div className="font-semibold text-xs text-gray-700 p-2">Lat</div>
-              <div className="font-semibold text-xs text-gray-700 p-2">Lng</div>
+              <div className="font-semibold text-xs text-gray-400 p-2">Lat</div>
+              <div className="font-semibold text-xs text-gray-400 p-2">Lng</div>
               <div>{/* actions column */}</div>
 
               {path.waypoints.map((point, pointIdx) => (
@@ -91,9 +91,11 @@ export function PathsManager({
               ))}
             </div>
 
-            <button className="Button mt-2 py-1 px-2">➕ Add</button>
+            <button className="Button bg-gray-700 mt-2 py-1 px-2">
+              ➕ Add
+            </button>
 
-            <div className="mt-5 text-right">
+            <div className="mt-5 text-right text-black">
               <button className="PrimaryButton shadow ml-auto">💾 Save</button>
             </div>
           </Tab.Panel>
