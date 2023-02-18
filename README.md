@@ -1,6 +1,10 @@
 # Drone Flight Simulator
 
-Demo: https://flyt.surge.sh
+## Demo
+
+Link: https://flyt.surge.sh
+
+<img src="./assets/drone-flight-simulator.gif" alt="Drone Flight Simulator Demo" />
 
 ## Instructions
 
