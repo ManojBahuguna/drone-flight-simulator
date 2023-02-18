@@ -1,4 +1,4 @@
-import { ChangeEvent, useMemo, useState } from "react";
+import { ChangeEvent, useCallback, useMemo, useState } from "react";
 import { type Path } from "../utils/types";
 import { usePlaySimulation } from "../utils/usePlaySimulation";
 import { useSetupMarkers } from "../utils/useSetupMarkers";
@@ -24,12 +24,18 @@ export function SeekControls({
   // Setup markers depicting drones
   useSetupMarkers({ paths, map, currentTimestamp });
 
+  const reset = useCallback(() => {
+    setStartAt(minTimestamp);
+    setIsPlaying(false);
+  }, [minTimestamp]);
+
   // drone flight simulation
   usePlaySimulation({
     startAt,
     isPlaying,
     endAt: maxTimestamp,
     setCurrentTimestamp,
+    onDone: reset,
   });
 
   const handleTimestampChange = (e: ChangeEvent<HTMLInputElement>) => {

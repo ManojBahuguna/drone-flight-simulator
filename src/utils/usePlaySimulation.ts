@@ -5,11 +5,13 @@ export function usePlaySimulation({
   endAt,
   setCurrentTimestamp,
   isPlaying,
+  onDone,
 }: {
   startAt: number;
   endAt: number;
   setCurrentTimestamp: Dispatch<SetStateAction<number>>;
   isPlaying: boolean;
+  onDone: () => void;
 }) {
   // update timestamp in drone simulation
   useEffect(() => {
@@ -26,6 +28,7 @@ export function usePlaySimulation({
       const currentTimestampInPath = startAt + elapsedSimulationTime;
       if (currentTimestampInPath > endAt) {
         setCurrentTimestamp(endAt);
+        onDone();
         return; // stop animation loop when reached end
       }
       setCurrentTimestamp(currentTimestampInPath);
@@ -38,5 +41,5 @@ export function usePlaySimulation({
       window.cancelAnimationFrame(rafId);
       stopAnimation = true;
     };
-  }, [isPlaying, setCurrentTimestamp, startAt, endAt]);
+  }, [isPlaying, setCurrentTimestamp, startAt, endAt, onDone]);
 }
