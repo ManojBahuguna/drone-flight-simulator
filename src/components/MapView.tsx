@@ -1,9 +1,9 @@
-import { useEffect, useRef } from "react";
+import { type Dispatch, type SetStateAction, useEffect, useRef } from "react";
 
 export function MapView({
   setMap,
 }: {
-  setMap: React.Dispatch<React.SetStateAction<google.maps.Map | null>>;
+  setMap: Dispatch<SetStateAction<google.maps.Map | null>>;
 }) {
   const ref = useRef<HTMLDivElement>(null);
 

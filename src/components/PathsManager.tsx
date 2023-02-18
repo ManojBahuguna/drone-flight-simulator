@@ -1,5 +1,10 @@
 import { Tab } from "@headlessui/react";
-import { Fragment, MouseEvent } from "react";
+import {
+  type Dispatch,
+  type MouseEvent,
+  type SetStateAction,
+  Fragment,
+} from "react";
 import { type Path } from "../utils/types";
 
 export function PathsManager({
@@ -7,7 +12,7 @@ export function PathsManager({
   setPaths,
 }: {
   paths: Path[];
-  setPaths: React.Dispatch<React.SetStateAction<Path[]>>;
+  setPaths: Dispatch<SetStateAction<Path[]>>;
 }) {
   const handleAddPath = () => {
     setPaths((p) => {

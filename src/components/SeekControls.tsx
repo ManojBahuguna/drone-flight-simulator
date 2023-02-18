@@ -1,6 +1,7 @@
 import { ChangeEvent, useMemo, useState } from "react";
 import { type Path } from "../utils/types";
-import { useDronePath } from "../utils/useDronePath";
+import { usePlaySimulation } from "../utils/usePlaySimulation";
+import { useSetupMarkers } from "../utils/useSetupMarkers";
 
 export function SeekControls({
   paths,
@@ -19,8 +20,17 @@ export function SeekControls({
   const [startAt, setStartAt] = useState(minTimestamp);
   const [isPlaying, setIsPlaying] = useState(true);
 
+  // Setup markers depicting drones
+  useSetupMarkers({ paths, map, startAt });
+
   // drone flight simulation
-  useDronePath({ paths, map, startAt, isPlaying });
+  usePlaySimulation({
+    paths,
+    startAt,
+    endAt: maxTimestamp,
+    isPlaying,
+    setStartAt,
+  });
 
   const handleStartAtChange = (e: ChangeEvent<HTMLInputElement>) => {
     setIsPlaying(false);
