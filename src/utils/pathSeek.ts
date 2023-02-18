@@ -27,7 +27,7 @@ function searchInPath(path: PathPoint[], timestamp: number) {
 export function getPointAtTimestamp(
   path: PathPoint[],
   timestamp: number
-): [PathPoint, number] {
+): [Omit<PathPoint, "id">, number] {
   const minTime = path[0].timestamp;
   const maxTime = path[path.length - 1].timestamp;
 
