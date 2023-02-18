@@ -1,5 +1,6 @@
 import { type ChangeEvent, type FormEvent, Fragment, useState } from "react";
 import { type PathPoint, type Path } from "../utils/types";
+import { textToPath } from "../utils/textToPath";
 
 export function PathEditForm({
   defaultPath,
@@ -39,6 +40,17 @@ export function PathEditForm({
       lng: (lastWaypoint?.lng || 73.77) + 0.003,
     };
     setWaypoints([...waypoints, newWaypoint]);
+  };
+
+  const handleImport = (e: ChangeEvent<HTMLInputElement>) => {
+    if (!e.target.files?.length) return;
+
+    const reader = new FileReader();
+    reader.onload = function () {
+      setWaypoints(textToPath(reader.result as string));
+      setIsTouched(true);
+    };
+    reader.readAsText(e.target.files[0]);
   };
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
@@ -98,11 +110,15 @@ export function PathEditForm({
         ➕ Add
       </button>
 
-      <div className="mt-5 text-right text-black">
+      <div className="mt-5 flex justify-end gap-4 text-black">
+        <label className="Button">
+          📥 Import
+          <input type="file" onChange={handleImport} className="hidden" />
+        </label>
         <button
           disabled={!isTouched}
           type="submit"
-          className="PrimaryButton shadow ml-auto"
+          className="PrimaryButton shadow"
         >
           💾 Save
         </button>
