@@ -1,20 +1,17 @@
-import { Dispatch, SetStateAction, useEffect } from "react";
-import { type Path } from "./types";
+import { type Dispatch, type SetStateAction, useEffect } from "react";
 
 export function usePlaySimulation({
-  paths,
   startAt,
   endAt,
-  setStartAt,
+  setCurrentTimestamp,
   isPlaying,
 }: {
-  paths: Path[];
   startAt: number;
   endAt: number;
-  setStartAt: Dispatch<SetStateAction<number>>;
+  setCurrentTimestamp: Dispatch<SetStateAction<number>>;
   isPlaying: boolean;
 }) {
-  // Play simulation
+  // update timestamp in drone simulation
   useEffect(() => {
     if (!isPlaying) return;
     let stopAnimation = false;
@@ -28,10 +25,10 @@ export function usePlaySimulation({
       const elapsedSimulationTime = Date.now() - simulationStartTime;
       const currentTimestampInPath = startAt + elapsedSimulationTime;
       if (currentTimestampInPath > endAt) {
-        setStartAt(endAt);
-        return;
+        setCurrentTimestamp(endAt);
+        return; // stop animation loop when reached end
       }
-      setStartAt(currentTimestampInPath);
+      setCurrentTimestamp(currentTimestampInPath);
 
       rafId = window.requestAnimationFrame(animate);
     }
@@ -41,5 +38,5 @@ export function usePlaySimulation({
       window.cancelAnimationFrame(rafId);
       stopAnimation = true;
     };
-  }, [startAt, isPlaying, setStartAt, endAt]);
+  }, [isPlaying, setCurrentTimestamp, startAt, endAt]);
 }

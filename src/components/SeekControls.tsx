@@ -17,36 +17,51 @@ export function SeekControls({
     return [Math.min(...allTimestamps), Math.max(...allTimestamps)];
   }, [paths]);
 
-  const [startAt, setStartAt] = useState(minTimestamp);
+  const [startAt, setStartAt] = useState(minTimestamp - 2000); // initially start after 2 seconds
+  const [currentTimestamp, setCurrentTimestamp] = useState(startAt);
   const [isPlaying, setIsPlaying] = useState(true);
 
   // Setup markers depicting drones
-  useSetupMarkers({ paths, map, startAt });
+  useSetupMarkers({ paths, map, currentTimestamp });
 
   // drone flight simulation
   usePlaySimulation({
-    paths,
     startAt,
-    endAt: maxTimestamp,
     isPlaying,
-    setStartAt,
+    endAt: maxTimestamp,
+    setCurrentTimestamp,
   });
 
-  const handleStartAtChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleTimestampChange = (e: ChangeEvent<HTMLInputElement>) => {
     setIsPlaying(false);
-    setStartAt(+e.target.value);
+
+    const newTimestamp = +e.target.value;
+    setCurrentTimestamp(newTimestamp);
+    setStartAt(newTimestamp);
+  };
+
+  const handleTogglePlay = () => {
+    if (isPlaying) {
+      // when pausing, set currentTimestamp to startAt, so that simulation starts from here only next time
+      setStartAt(currentTimestamp);
+      setIsPlaying(false);
+      return;
+    }
+
+    setIsPlaying(true);
   };
 
   const handleStop = () => {
     setIsPlaying(false);
-    setStartAt(minTimestamp); // reset to initial position
+
+    // reset to initial position
+    setCurrentTimestamp(minTimestamp);
+    setStartAt(minTimestamp);
   };
 
   return (
     <div className="flex bg-black/70 py-2 px-4 rounded-full text-3xl">
-      <button onClick={() => setIsPlaying((v) => !v)}>
-        {isPlaying ? "⏸️" : "▶️"}
-      </button>
+      <button onClick={handleTogglePlay}>{isPlaying ? "⏸️" : "▶️"}</button>
       <button onClick={handleStop} className="mr-4">
         ⏹️
       </button>
@@ -55,8 +70,8 @@ export function SeekControls({
         type="range"
         min={minTimestamp}
         max={maxTimestamp}
-        value={startAt}
-        onChange={handleStartAtChange}
+        value={currentTimestamp}
+        onChange={handleTimestampChange}
       />
     </div>
   );

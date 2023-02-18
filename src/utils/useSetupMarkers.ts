@@ -1,15 +1,15 @@
 import { useEffect, useState } from "react";
 import { type Path } from "./types";
-import { getPointAtTimestamp } from "./pathSeek";
+import { useSyncDroneMarkers } from "./useSyncDroneMarkers";
 
 export function useSetupMarkers({
   paths,
   map,
-  startAt,
+  currentTimestamp,
 }: {
   paths: Path[];
   map: google.maps.Map | null;
-  startAt: number;
+  currentTimestamp: number;
 }) {
   const [markers, setMarkers] = useState<google.maps.Marker[]>([]);
 
@@ -36,14 +36,7 @@ export function useSetupMarkers({
     };
   }, [paths, map]);
 
-  // set marker position to `startAt`
-  useEffect(() => {
-    if (markers.length !== paths.length) return;
-    markers.forEach((marker, i) => {
-      const [position] = getPointAtTimestamp(paths[i].waypoints, startAt);
-      marker.setPosition(position);
-    });
-  }, [paths, markers, startAt]);
+  useSyncDroneMarkers({ markers, paths, currentTimestamp });
 
   return markers;
 }
